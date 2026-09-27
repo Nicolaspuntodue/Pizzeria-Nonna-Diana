@@ -130,6 +130,12 @@
 .t-card.is-back {
   --flip: 180deg;
 }
+.t-card.is-back .t-front {
+  visibility: hidden;
+}
+.t-card.is-back .t-back {
+  visibility: visible;
+}
 .t-face {
   position: absolute;
   inset: 0;
@@ -257,8 +263,16 @@
   color: #4b4a42;
   white-space: nowrap;
 }
+.t-front {
+  transform: translateZ(1px);
+}
+.t-front,
 .t-back {
-  transform: rotateY(180deg);
+  transition: visibility 0s linear 0.2s;
+}
+.t-back {
+  transform: rotateY(180deg) translateZ(1px);
+  visibility: hidden;
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: 1fr 1fr;
@@ -542,7 +556,7 @@
   inset: 0;
   background:
     radial-gradient(ellipse at 50% 36%, rgb(179 38 30 / 0.5), transparent 62%),
-    rgb(20 16 11 / 0.95);
+    rgb(20 16 11 / 0.97);
 }
 .win-canvas {
   position: absolute;

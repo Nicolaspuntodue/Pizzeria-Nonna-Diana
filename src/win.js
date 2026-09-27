@@ -348,7 +348,7 @@ export async function showWin({ serial = "ND-0000", reduced = false, lenis = nul
     camera.updateProjectionMatrix();
     const t = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     // fit the ticket: most of the width on phones, less on big screens, at most 46% of the height
-    const dW = TICKET_W / (w < 768 ? 0.94 : w < 1100 ? 0.8 : 0.62) / (2 * t * camera.aspect);
+    const dW = TICKET_W / (w < 768 ? 0.86 : w < 1100 ? 0.8 : 0.62) / (2 * t * camera.aspect);
     const dH = TICKET_H / 0.46 / (2 * t);
     const d = Math.max(dW, dH);
     camera.position.set(0, 0, d);
@@ -396,10 +396,10 @@ export async function showWin({ serial = "ND-0000", reduced = false, lenis = nul
       .fromTo(uniforms.uShine, { value: -0.6 }, { value: 1.8, duration: 1.2, ease: "power2.inOut", repeat: -1, repeatDelay: 1.6 }, 2.8);
   }
 
-  const clock = new THREE.Clock();
+  const t0 = performance.now();
   const loop = () => {
     raf = requestAnimationFrame(loop);
-        const t = clock.elapsedTime;
+        const t = (performance.now() - t0) / 1000;
     uniforms.uTime.value = t;
 
     // idle float + follow the pointer a little once it has landed

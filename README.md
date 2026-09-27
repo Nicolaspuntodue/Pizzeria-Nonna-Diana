@@ -11,6 +11,15 @@ npm install
 npm run dev
 ```
 
+Audit mobile (WebKit, iPhone 13 e iPhone SE emulati, sulla build di produzione):
+
+```bash
+npx playwright install webkit
+npm run test:mobile
+```
+
+Controlla errori JS, scroll orizzontale, testo nascosto o tagliato dalle animazioni, aree di tocco, flusso della Nonna Diana Card e biglietto vincente; salva gli screenshot in `tests/artifacts/`.
+
 Build statica in `dist/` con `npm run build` (percorsi relativi, pubblicabile su GitHub Pages, Netlify o Vercel).
 
 ## Stack

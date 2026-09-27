@@ -92,6 +92,12 @@ img {
 a {
   color: inherit;
 }
+a,
+button,
+input {
+  /* custom :active states instead of iOS's grey tap flash */
+  -webkit-tap-highlight-color: transparent;
+}
 h1,
 h2,
 h3 {
@@ -252,7 +258,8 @@ ul {
     box-shadow 0.35s var(--ease-out);
 }
 .nav.is-solid {
-  background: color-mix(in srgb, var(--paper) 86%, transparent);
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   box-shadow: 0 1px 0 var(--line);
 }
@@ -276,8 +283,8 @@ ul {
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 999px;
   background: var(--tomato);
   color: var(--tomato-ink);
@@ -531,7 +538,11 @@ ul {
   gap: var(--s-5);
   padding-inline: var(--gutter);
   width: max-content;
-  will-change: transform;
+}
+@media (min-width: 768px) {
+  .teglie-track {
+    will-change: transform; /* only where it is actually animated */
+  }
 }
 .tcard {
   flex: 0 0 auto;
@@ -976,7 +987,6 @@ ul {
 }
 .wi {
   display: inline-block;
-  will-change: transform;
 }
 
 /* no WebGL: show a photo instead of the 3D teglia */
@@ -995,5 +1005,21 @@ ul {
 @media (max-width: 1099px) {
   .no-webgl .hero-fallback {
     margin-top: var(--s-7);
+  }
+}
+
+/* phones: WebKit renders the condensed display cut tighter than Chromium, give the letters air */
+@media (max-width: 767px) {
+  .display {
+    letter-spacing: -0.018em;
+    font-stretch: 94%;
+    line-height: 1.04;
+  }
+  .h2 {
+    letter-spacing: -0.012em;
+    font-stretch: 96%;
+  }
+  .manifesto-text {
+    letter-spacing: -0.015em;
   }
 }

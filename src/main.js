@@ -25,6 +25,7 @@ const S = {
   dist: 8.8,
   x: 1.75,
   y: 0,
+  vy: 0.9, // phones only: vertical position of the teglia, as a fraction of the visible screen
   rise: 1,
   explode: 0,
   feature: 0,
@@ -39,11 +40,12 @@ if (import.meta.env.DEV) window.__S = S;
 
 // camera keyframes, explicit so scrubbing both ways is deterministic
 const K = {
-  hero: { rotY: -0.55, phi: 0.98, dist: 8.8, x: 1.75 },
-  ch1: { rotY: 0.3, phi: 0.36, dist: 6.3, x: 1.4 }, // low, along the side: you see the thickness
-  ch1b: { rotY: 0.62, phi: 0.3, dist: 5.6, x: 1.35 },
-  ch2: { rotY: 2.25, phi: 0.82, dist: 7.6, x: 1.55 }, // three quarters on the steel pan
-  ch3: { rotY: Math.PI * 2 - 0.28, phi: 1.12, dist: 8.9, x: 1.45 }, // from above for the cut
+  // phones: low in the hero so it never sits behind the copy, then up under the chapter text
+  hero: { rotY: -0.55, phi: 0.98, dist: 8.8, x: 1.75, vy: 0.9 },
+  ch1: { rotY: 0.3, phi: 0.36, dist: 6.3, x: 1.4, vy: 0.71 }, // low, along the side: you see the thickness
+  ch1b: { rotY: 0.62, phi: 0.3, dist: 5.6, x: 1.35, vy: 0.71 },
+  ch2: { rotY: 2.25, phi: 0.82, dist: 7.6, x: 1.55, vy: 0.71 }, // three quarters on the steel pan
+  ch3: { rotY: Math.PI * 2 - 0.28, phi: 1.12, dist: 8.9, x: 1.45, vy: 0.71 }, // from above for the cut
 };
 
 /* ---------- smooth scroll on desktop only (touch keeps native iOS momentum) ---------- */
@@ -102,6 +104,7 @@ const canvas = document.getElementById("webgl");
 sceneModule
   .then(({ createScene }) => {
     const three = createScene(canvas, { state: S, reducedMotion: reduced });
+    if (import.meta.env.DEV) window.__three = three;
     gsap.ticker.add(three.render);
     return three.ready;
   })
@@ -125,10 +128,9 @@ if (!reduced) {
     .from(".hero-ctas > *", { y: 20, autoAlpha: 0, duration: 0.9, stagger: 0.08 }, 0.55);
 }
 
-/* ---------- nav turns solid once the hero is behind us ---------- */
+/* ---------- nav turns solid as soon as the page moves (text never slides under a bare nav) ---------- */
 ScrollTrigger.create({
-  trigger: ".hero",
-  start: "bottom 90%",
+  start: 8,
   end: "max",
   toggleClass: { targets: "#nav", className: "is-solid" },
 });
@@ -152,14 +154,15 @@ if (reduced) {
   };
   const chapterOut = (tl, i, at) => tl.to(chapters[i], { autoAlpha: 0, y: -24, duration: 0.1 }, at);
 
-  // hero -> story: the teglia turns and drops to eye level
-  go(
-    gsap.timeline({ scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } }),
-    K.hero,
-    K.ch1,
-    1,
-    0
-  );
+  // hero -> story: the teglia turns and drops to eye level.
+  // This only drives a progress value; the camera is written in one place (below) so the
+  // hero and story timelines can never fight over it while scrubbing.
+  const heroP = { v: 0 };
+  gsap.to(heroP, {
+    v: 1,
+    ease: "none",
+    scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: touch ? 0.3 : true },
+  });
 
   const tl = gsap.timeline({
     defaults: { ease: "none" },
@@ -172,14 +175,14 @@ if (reduced) {
       anticipatePin: 1,
       // on the phone each chapter lands cleanly under the thumb
       snap: touch
-        ? { snapTo: "labelsDirectional", duration: { min: 0.25, max: 0.7 }, delay: 0.05, ease: "power2.inOut" }
+        ? { snapTo: "labels", duration: { min: 0.3, max: 0.8 }, delay: 0.15, ease: "power2.inOut", inertia: false }
         : false,
     },
   });
 
   // 1. back to raw dough, which then rises: "poco lievito, tanto tempo"
   chapterIn(tl, 0, 0.02);
-  go(tl, K.ch1, K.ch1b, 0.95, 0);
+  go(tl, K.ch1, K.ch1b, 0.95, 0.001);
   go(tl, { bake: 1 }, { bake: 0.12 }, 0.22, 0.02, "power1.inOut");
   go(tl, { rise: 1 }, { rise: 0.55 }, 0.22, 0.02, "power1.inOut");
   go(tl, { rise: 0.55 }, { rise: 1.12 }, 0.5, 0.28, "sine.inOut");
@@ -203,6 +206,13 @@ if (reduced) {
   go(tl, { feature: 0 }, { feature: 1 }, 0.42, 2.5, "power2.inOut");
   tl.addLabel("c3", 2.95);
   tl.to({}, { duration: 0.05 }, 2.95);
+
+  // while the story has not started, the hero scroll owns the camera
+  const lerp = (a, b, t) => a + (b - a) * t;
+  gsap.ticker.add(() => {
+    if (tl.progress() > 0.0002) return;
+    for (const k in K.hero) S[k] = lerp(K.hero[k], K.ch1[k], heroP.v);
+  });
 
   // the teglia rises away as the olive manifesto slides over it
   gsap.fromTo(

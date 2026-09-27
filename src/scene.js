@@ -317,8 +317,9 @@ export function createScene(canvas, { state, reducedMotion = false } = {}) {
     powerPreference: "high-performance",
     stencil: false,
   });
-  let dpr = Math.min(window.devicePixelRatio || 1, quality === "high" ? 1.75 : 2);
-  renderer.setPixelRatio(dpr);
+  // fixed resolution, chosen once: resizing the canvas mid-scroll blanked it in WebKit
+  // and forces a buffer reallocation on iPhone. 1.75x keeps Retina edges crisp.
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.04;
@@ -474,8 +475,12 @@ export function createScene(canvas, { state, reducedMotion = false } = {}) {
   }
 
   // --- responsive framing ---
-  const layout = { xMul: 1, distMul: 1, yOff: 0 };
+  const layout = { xMul: 1, distMul: 1, yOff: 0, portrait: false, visible: 1, w: 1, h: 1 };
   const host = canvas.parentElement;
+  // the smallest visible viewport (Safari with its toolbars showing): the teglia is framed inside it
+  const svhProbe = document.createElement("div");
+  svhProbe.style.cssText = "position:fixed;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none";
+  document.body.append(svhProbe);
   let lastW = 0;
   let lastH = 0;
   let dirty = true;
@@ -488,16 +493,22 @@ export function createScene(canvas, { state, reducedMotion = false } = {}) {
     lastH = h;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    camera.updateProjectionMatrix();
     if (w < 1100) {
+      // stacked layout: copy on top, teglia centred at ~71% of the *visible* height,
+      // whatever the phone's height or toolbar state (was a fixed world offset before)
+      const visible = Math.min(h, svhProbe.offsetHeight || h);
+      Object.assign(layout, { portrait: true, visible, w, h });
       layout.xMul = 0;
-      layout.distMul = THREE.MathUtils.clamp(0.95 / (w / h), 1.05, 2.2);
-      layout.yOff = w < 768 ? -2.6 : -1.5;
+      layout.distMul = THREE.MathUtils.clamp(0.95 / (w / visible), 1.05, 2.2);
+      layout.yOff = 0;
     } else {
+      camera.clearViewOffset();
+      layout.portrait = false;
       layout.xMul = 1;
       layout.distMul = 1;
       layout.yOff = 0;
     }
+    camera.updateProjectionMatrix();
     dirty = true;
   }
   new ResizeObserver(() => resize()).observe(host);
@@ -552,13 +563,11 @@ export function createScene(canvas, { state, reducedMotion = false } = {}) {
   });
 
   /* ---------------- per frame ---------------- */
-  const KEYS = ["rotY", "phi", "dist", "x", "y", "rise", "explode", "feature", "fade", "bake", "glow", "intro", "exit"];
+  const KEYS = ["rotY", "phi", "dist", "x", "y", "vy", "rise", "explode", "feature", "fade", "bake", "glow", "intro", "exit"];
   const last = new Float32Array(KEYS.length).fill(NaN);
   const tmpA = new THREE.Vector3();
   const tmpB = new THREE.Vector3();
-  const clock = new THREE.Clock();
-  let frames = 0;
-  let slow = 0;
+  const t0 = performance.now();
 
   function changed() {
     let c = false;
@@ -603,7 +612,6 @@ export function createScene(canvas, { state, reducedMotion = false } = {}) {
 
   function render() {
     const S = state;
-    const dt = clock.getDelta();
     const fade = clamp01(S.fade);
     if (canvas.classList.contains("is-ready")) canvas.style.opacity = String(fade);
     if (fade < 0.01) return;
@@ -615,7 +623,7 @@ export function createScene(canvas, { state, reducedMotion = false } = {}) {
     }
     if (!continuous && !moving && !dirty) return; // phones: render only when something changed
     dirty = false;
-    const t = clock.elapsedTime;
+    const t = (performance.now() - t0) / 1000;
 
     // intro camera settle, eased here so scroll tweens never fight it
     const ci = 1 - Math.pow(1 - clamp01(S.intro), 3);
@@ -624,6 +632,11 @@ export function createScene(canvas, { state, reducedMotion = false } = {}) {
       S.rotY - (1 - ci) * 1.1 + pointer.x * 0.12 + (continuous ? Math.sin(t * 0.35) * 0.025 : 0);
     root.rotation.x = pointer.y * 0.05;
     const dist = S.dist * layout.distMul * (1 + (1 - ci) * 0.45);
+    if (layout.portrait) {
+      // phones: centre the teglia at a fraction (S.vy) of the visible height, below the copy
+      const targetY = layout.visible * S.vy;
+      camera.setViewOffset(layout.w, layout.h, 0, -(targetY - layout.h / 2), layout.w, layout.h);
+    }
     camera.position.set(0, Math.sin(S.phi) * dist, Math.cos(S.phi) * dist);
     camera.lookAt(0, 0, 0);
 
@@ -675,22 +688,7 @@ export function createScene(canvas, { state, reducedMotion = false } = {}) {
     }
 
     renderer.render(scene, camera);
-
-    // adaptive resolution: step down if the GPU cannot keep up
-    if (dt > 0 && dt < 0.5) {
-      frames++;
-      if (dt > 1 / 40) slow++;
-      if (frames >= 45) {
-        if (slow > 25 && dpr > 1.25) {
-          dpr = Math.max(1.25, dpr - 0.25);
-          renderer.setPixelRatio(dpr);
-          resize(true);
-        }
-        frames = 0;
-        slow = 0;
-      }
-    }
   }
 
-  return { render, ready, quality };
+  return { render, ready, quality, renderer, camera, root };
 }
