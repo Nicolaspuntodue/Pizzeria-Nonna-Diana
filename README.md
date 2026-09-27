@@ -45,10 +45,12 @@ Build statica in `dist/` con `npm run build` (percorsi relativi, pubblicabile su
 6. Fritti
 7. La famiglia
 8. Recensioni
-9. Dove siamo, orari, contatti
+9. **Nonna Diana Card**: tessera fedeltà digitale con QR, timbri (10 tranci + 1 in omaggio), offerte e vantaggi
+10. Dove siamo, orari, contatti
 
 ## Note per la consegna
 
 - Le foto in `public/img/` sono **generate con AI (Higgsfield, 5 crediti)** a scopo illustrativo: vanno sostituite con foto reali del locale.
 - Orari e sede di Pescara vanno confermati con il cliente (vedi `docs/research.md`).
+- Nonna Diana Card: da dove viene e come presentarla al cliente in [`docs/nonna-diana-card.md`](docs/nonna-diana-card.md).
 - Ricerca e fonti: [`docs/research.md`](docs/research.md). Design system: [`design-system/pizzeria-nonna-diana/MASTER.md`](design-system/pizzeria-nonna-diana/MASTER.md).

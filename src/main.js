@@ -5,6 +5,7 @@ import "./style.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { initTessera } from "./tessera.js";
 
 // start fetching three.js right away, but never block the first paint on it
 const sceneModule = import("./scene.js");
@@ -92,6 +93,9 @@ function splitWords(el) {
   el.append(frag);
   return el.querySelectorAll(".wi");
 }
+
+/* ---------- digital stamp card ---------- */
+initTessera({ reduced });
 
 /* ---------- WebGL teglia ---------- */
 const canvas = document.getElementById("webgl");
@@ -273,6 +277,36 @@ if (reduced) {
       ease: "expo.out",
       scrollTrigger: { trigger: ".teglie-track", start: "top 85%" },
     });
+  });
+
+  /* ---------- tessera: the card lands on the counter as you arrive ---------- */
+  gsap.fromTo(
+    "#t-stage",
+    { yPercent: 18, rotate: -7, autoAlpha: 0 },
+    {
+      yPercent: 0,
+      rotate: 0,
+      autoAlpha: 1,
+      ease: "none",
+      scrollTrigger: { trigger: "#tessera", start: "top 85%", end: "top 35%", scrub: 0.6 },
+    }
+  );
+  gsap.from(".offer", {
+    y: 30,
+    rotate: (i) => [-2, 1.5, -1][i % 3],
+    autoAlpha: 0,
+    duration: 0.9,
+    stagger: 0.08,
+    ease: "expo.out",
+    scrollTrigger: { trigger: ".offers", start: "top 88%" },
+  });
+  gsap.from(".perk", {
+    y: 40,
+    autoAlpha: 0,
+    duration: 0.9,
+    stagger: 0.08,
+    ease: "expo.out",
+    scrollTrigger: { trigger: ".perks", start: "top 85%" },
   });
 
   /* ---------- reveals ---------- */

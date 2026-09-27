@@ -64,6 +64,8 @@
 }
 html {
   -webkit-text-size-adjust: 100%;
+  /* nothing may widen the layout viewport on phones (rotated marquee, 3D card) */
+  overflow-x: clip;
 }
 html.lenis,
 html.lenis body {

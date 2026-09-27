@@ -33,6 +33,7 @@
             <li><a href="#teglie">Le teglie</a></li>
             <li><a href="#fritti">I fritti</a></li>
             <li><a href="#famiglia">La famiglia</a></li>
+            <li><a href="#tessera">Card</a></li>
             <li><a href="#dove">Dove siamo</a></li>
           </ul>
         </nav>
@@ -153,7 +154,8 @@
           <div class="teglie-head container">
             <h2 class="h2">Box e teglie da portare a casa.</h2>
             <p class="muted">
-              Prezzi dal nostro menu per la consegna. Chiama per i gusti del giorno.
+              Prezzi dal nostro menu per la consegna. Con la
+              <a href="#tessera">Nonna Diana Card</a> ogni 10 tranci uno è in omaggio.
             </p>
           </div>
           <div class="teglie-track" id="teglie-track">
@@ -304,6 +306,129 @@
             <blockquote>“Sempre il top.”</blockquote>
             <figcaption>Recensione di un cliente, via Restaurant Guru</figcaption>
           </figure>
+        </div>
+      </section>
+
+      <!-- TESSERA: loyalty card in the phone -->
+      <section class="tessera section" id="tessera" aria-labelledby="tessera-h">
+        <div class="container">
+          <div class="tessera-grid">
+            <div class="tessera-copy">
+              <p class="eyebrow">Novità: Nonna Diana Card</p>
+              <h2 class="h2" id="tessera-h">I timbri della pizzeria, ora nel telefono.</h2>
+              <p class="lead">
+                Come la tessera di cartone: ogni trancio al taglio vale un timbro e ogni 10 tranci
+                uno è in omaggio. Niente app da scaricare.
+              </p>
+
+              <p class="invite" id="t-invite" hidden></p>
+
+              <form class="t-form" id="t-form" novalidate>
+                <label for="t-name">Come ti chiami?</label>
+                <div class="t-row">
+                  <input
+                    id="t-name"
+                    name="nome"
+                    type="text"
+                    autocomplete="given-name"
+                    maxlength="22"
+                    placeholder="Il tuo nome"
+                    aria-describedby="t-status"
+                  />
+                  <button class="btn btn-primary" type="submit" id="t-make">Crea la Card</button>
+                </div>
+                <p class="t-status" id="t-status" role="status" aria-live="polite"></p>
+              </form>
+
+              <div class="t-actions" id="t-actions" hidden>
+                <button class="btn btn-primary" type="button" id="t-stamp">Simula un timbro</button>
+                <button class="btn btn-ghost" type="button" id="t-flip" aria-pressed="false">Mostra il QR</button>
+                <button class="t-reset" type="button" id="t-reset">Ricomincia</button>
+                <p class="t-help">
+                  In pizzeria il timbro lo mette chi è alla cassa, scansionando il tuo QR. Qui lo simuli
+                  tu.
+                </p>
+              </div>
+            </div>
+
+            <div class="t-stage" id="t-stage">
+              <div class="t-lift" id="t-lift">
+                <div class="t-card" id="t-card">
+                <p class="sr-only" id="t-card-sr" aria-live="polite"></p>
+                <div class="t-face t-front" id="t-front">
+                  <div class="t-top">
+                    <span class="t-brand">Nonna Diana</span>
+                    <span class="t-kind">Card</span>
+                  </div>
+                  <div class="t-stamps" id="t-stamps" aria-hidden="true"></div>
+                  <div class="t-bottom">
+                    <span class="t-name ph" id="t-card-name">Il tuo nome</span>
+                    <span class="t-id" id="t-card-id">ND-0000</span>
+                  </div>
+                </div>
+                <div class="t-face t-back" id="t-back" aria-hidden="true">
+                  <div class="t-qr" id="t-qr"></div>
+                  <p class="t-back-id" id="t-back-id">ND-0000</p>
+                  <p class="t-back-note">Mostra questo codice alla cassa</p>
+                </div>
+                </div>
+              </div>
+              <p class="t-progress" id="t-progress-text" aria-live="polite">
+                Ogni trancio un timbro: al decimo, uno è in omaggio.
+              </p>
+            </div>
+          </div>
+
+          <h3 class="offers-h">Le offerte della Card</h3>
+          <ul class="offers">
+            <li class="offer">
+              <p class="offer-big">10 + 1</p>
+              <div>
+                <h4>Dieci tranci, uno in omaggio</h4>
+                <p>Al taglio o in box: ogni 10 tranci l'undicesimo lo offriamo noi.</p>
+              </div>
+            </li>
+            <li class="offer">
+              <p class="offer-big">Mar</p>
+              <div>
+                <h4>Il martedì della Card</h4>
+                <p>Box misto da 6 pezzi con 2 supplì a 12 €, solo il martedì.</p>
+              </div>
+            </li>
+            <li class="offer">
+              <p class="offer-big">Auguri</p>
+              <div>
+                <h4>La settimana del compleanno</h4>
+                <p>Un trancio di Gustosa offerto, con zucca, pancetta e gorgonzola.</p>
+              </div>
+            </li>
+          </ul>
+
+          <ul class="perks">
+            <li class="perk">
+              <p class="perk-big">2 supplì</p>
+              <h3>Al primo ordine</h3>
+              <p>Dillo al telefono o mostra il codice quando ritiri.</p>
+              <button class="t-chip" type="button" data-copy="SUPPLI2">Copia SUPPLI2</button>
+            </li>
+            <li class="perk perk-olive">
+              <p class="perk-big">+1</p>
+              <h3>Porta un vicino</h3>
+              <p>Chi ordina per la prima volta con il tuo link: un supplì a lui e uno a te.</p>
+              <button class="t-chip" type="button" id="t-invite-btn">Copia il tuo invito</button>
+            </li>
+            <li class="perk">
+              <p class="perk-big">WhatsApp</p>
+              <h3>Teglia pronta</h3>
+              <p>Ti scriviamo quando il tuo ordine è pronto da ritirare, così non aspetti al banco.</p>
+              <button class="t-chip" type="button" id="t-wa" aria-pressed="false">Avviso disattivato</button>
+            </li>
+          </ul>
+          <p class="t-note muted">
+              Demo: nome e timbri restano solo in questo browser e non vengono inviati a nessuno.
+            Offerte, prezzi e codici sono d'esempio. Nel sito vero la Card si collega agli ordini e ai
+            messaggi su WhatsApp.
+          </p>
         </div>
       </section>
 
