@@ -522,3 +522,70 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- winning ticket (WebGL overlay) ---------- */
+.win-open,
+.win-open body {
+  overflow: hidden;
+}
+.win {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: end center;
+  overscroll-behavior: contain;
+  touch-action: none;
+}
+.win-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 36%, rgb(179 38 30 / 0.5), transparent 62%),
+    rgb(20 16 11 / 0.95);
+}
+.win-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.win-ui {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--s-3);
+  padding: 0 var(--gutter) max(var(--s-8), env(safe-area-inset-bottom));
+  text-align: center;
+  color: #f7f0e2;
+  max-width: 560px;
+}
+.win-h {
+  /* the ticket shows the headline; this one is for screen readers and the no-WebGL fallback */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.win-sub {
+  color: rgb(247 240 226 / 0.85);
+  max-width: 40ch;
+}
+.win-close {
+  margin-top: var(--s-3);
+}
+.win.no-gl {
+  place-items: center;
+}
+.win.no-gl .win-h {
+  position: static;
+  width: auto;
+  height: auto;
+  clip: auto;
+  white-space: normal;
+  font-size: clamp(2rem, 7vw, 3.2rem);
+  line-height: 1.05;
+}

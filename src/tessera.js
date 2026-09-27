@@ -8,7 +8,7 @@ const KEY = "nonna-diana-tessera";
 const N = 10;
 const ID = /^ND-\d{4}-[A-Z0-9]{3}$/;
 
-export function initTessera({ reduced = false } = {}) {
+export function initTessera({ reduced = false, lenis = null } = {}) {
   const $ = (s) => document.getElementById(s);
   const root = $("tessera");
   if (!root) return;
@@ -68,7 +68,7 @@ export function initTessera({ reduced = false } = {}) {
   stampsEl.innerHTML = Array.from({ length: N }, (_, i) => {
     const rot = ((i * 37) % 23) - 11;
     return i === N - 1
-      ? `<i class="slot gift" style="--r:${rot}deg"><b>ND</b><span>Trancio<br>omaggio</span></i>`
+      ? `<i class="slot gift" style="--r:${rot}deg"><b>ND</b><span>Pizza<br>omaggio</span></i>`
       : `<i class="slot" style="--r:${rot}deg"><b>ND</b></i>`;
   }).join("");
   const slots = [...stampsEl.children];
@@ -89,12 +89,12 @@ export function initTessera({ reduced = false } = {}) {
     slots.forEach((el, i) => el.classList.toggle("on", i < st.stamps));
     $("t-actions").hidden = !st.made;
     $("t-make").textContent = st.made ? "Aggiorna il nome" : "Crea la Card";
-    $("t-stamp").textContent = st.stamps >= N ? "Ritira il trancio omaggio" : "Simula un timbro";
+    $("t-stamp").textContent = st.stamps >= N ? "Ritira il premio" : "Simula un timbro";
     const left = N - st.stamps;
     $("t-progress-text").textContent = !st.made
       ? "Ogni trancio un timbro: al decimo, uno è in omaggio."
       : left <= 0
-        ? "10 su 10: il prossimo trancio è in omaggio."
+        ? "10 su 10: hai vinto una pizza in omaggio."
         : `${st.stamps} su ${N}: ancora ${left} ${left === 1 ? "trancio" : "tranci"} e uno è in omaggio.`;
     $("t-card-sr").textContent = `Nonna Diana Card di ${st.name || "nessun nome"}, ${st.stamps} timbri su ${N}.`;
     $("t-wa").setAttribute("aria-pressed", String(st.wa));
@@ -161,14 +161,25 @@ export function initTessera({ reduced = false } = {}) {
       st.stamps = 0;
       save();
       render();
-      say("Trancio omaggio ritirato. Si riparte da zero.");
+      say("Premio ritirato. Si riparte da zero.");
       return;
     }
     setFlip(false);
     st.stamps++;
     save();
     render(st.stamps - 1);
-    say(st.stamps >= N ? "Decimo timbro: il prossimo trancio è in omaggio." : `Timbro aggiunto: ${st.stamps} su ${N}.`);
+    say(st.stamps >= N ? "Decimo timbro: hai vinto una pizza in omaggio." : `Timbro aggiunto: ${st.stamps} su ${N}.`);
+    if (st.stamps >= N) {
+      // tenth stamp: the winning ticket, a WebGL scene loaded only now
+      const serial = st.id;
+      setTimeout(
+        () =>
+          import("./win.js")
+            .then(({ showWin }) => showWin({ serial, reduced, lenis, onClose: () => $("t-stamp").focus() }))
+            .catch(() => say("Hai vinto una pizza in omaggio! Mostra la Card alla cassa.")),
+        reduced ? 0 : 650
+      );
+    }
   });
 
   $("t-wa").addEventListener("click", () => {

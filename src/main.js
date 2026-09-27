@@ -95,7 +95,7 @@ function splitWords(el) {
 }
 
 /* ---------- digital stamp card ---------- */
-initTessera({ reduced });
+initTessera({ reduced, lenis });
 
 /* ---------- WebGL teglia ---------- */
 const canvas = document.getElementById("webgl");
