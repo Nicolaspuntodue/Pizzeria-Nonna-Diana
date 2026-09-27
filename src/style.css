@@ -319,7 +319,12 @@ ul {
 /* ---------- webgl ---------- */
 .webgl {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* largest viewport: the canvas never resizes while Safari's toolbar collapses */
+  height: 100vh;
+  height: 100lvh;
   z-index: 1;
   pointer-events: none;
 }
@@ -420,7 +425,8 @@ ul {
   z-index: 2;
 }
 .story-stage {
-  height: 100dvh;
+  height: 100vh;
+  height: 100svh;
   display: flex;
   align-items: center;
 }
@@ -463,8 +469,8 @@ ul {
   .chapter {
     padding: var(--s-5);
     border-radius: var(--radius);
-    background: color-mix(in srgb, var(--paper) 88%, transparent);
-    backdrop-filter: blur(8px);
+    /* solid, no backdrop blur: it would repaint on every scroll frame on iPhone */
+    background: color-mix(in srgb, var(--paper) 94%, transparent);
     right: 0;
   }
 }
@@ -506,7 +512,8 @@ ul {
   overflow: hidden;
 }
 .teglie-pin {
-  min-height: 100dvh;
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -872,6 +879,10 @@ ul {
   .dove-cards {
     grid-template-columns: 1fr;
   }
+  .place {
+    backdrop-filter: none;
+    background: rgb(28 22 16 / 0.78);
+  }
 }
 
 /* ---------- footer ---------- */
@@ -951,4 +962,36 @@ ul {
   flex: none;
   fill: currentColor;
   vertical-align: -0.15em;
+}
+
+/* word masks for headline reveals (descender room for g, p, q) */
+.wm {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.wi {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* no WebGL: show a photo instead of the 3D teglia */
+.hero-fallback {
+  display: none;
+}
+.no-webgl .webgl {
+  display: none;
+}
+.no-webgl .hero-fallback {
+  display: block;
+  align-self: center;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+@media (max-width: 1099px) {
+  .no-webgl .hero-fallback {
+    margin-top: var(--s-7);
+  }
 }

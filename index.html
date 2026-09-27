@@ -11,7 +11,8 @@
     <meta name="theme-color" content="#F1ECE2" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#16140F" media="(prefers-color-scheme: dark)" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="preload" as="image" href="./img/teglia-top.jpg" />
+    <link rel="preload" as="image" href="./img/teglia-top.jpg" media="(min-width: 1100px) and (pointer: fine)" />
+    <link rel="preload" as="image" href="./img/teglia-top-1k.jpg" media="(max-width: 1099px), (pointer: coarse)" />
   </head>
   <body>
     <a class="skip" href="#main">Vai al contenuto</a>
@@ -63,6 +64,13 @@
               <a class="btn btn-ghost" href="#teglie">Vedi le teglie</a>
             </div>
           </div>
+          <img
+            class="hero-fallback"
+            src="./img/box.webp"
+            alt="Box di tranci: margherita, patate e salsiccia, diavola"
+            width="1800"
+            height="1350"
+          />
         </div>
       </section>
 
