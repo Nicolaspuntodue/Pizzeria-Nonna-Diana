@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pizzeria Nonna Diana | Pizza in teglia a Santa Teresa di Spoltore</title>
+    <meta
+      name="description"
+      content="Pizza al trancio e in teglia con lievito madre e 24-48 ore di lievitazione. Famiglia Canale, dal 2014. Via Mare Adriatico 75/bis, Santa Teresa di Spoltore."
+    />
+    <meta name="theme-color" content="#F1ECE2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#16140F" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preload" as="image" href="./img/teglia-top.jpg" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Vai al contenuto</a>
+
+    <div class="webgl">
+      <canvas id="webgl"></canvas>
+    </div>
+
+    <header class="nav" id="nav">
+      <div class="nav-inner">
+        <a class="brand" href="#top" aria-label="Pizzeria Nonna Diana, torna su">
+          <span class="brand-mark" aria-hidden="true">ND</span>
+          <span class="brand-name">Nonna Diana</span>
+        </a>
+        <nav aria-label="Principale">
+          <ul class="nav-links">
+            <li><a href="#impasto">L'impasto</a></li>
+            <li><a href="#teglie">Le teglie</a></li>
+            <li><a href="#fritti">I fritti</a></li>
+            <li><a href="#famiglia">La famiglia</a></li>
+            <li><a href="#dove">Dove siamo</a></li>
+          </ul>
+        </nav>
+        <a class="btn btn-primary btn-sm" href="tel:+393292897246">
+          <i class="ph ph-phone" aria-hidden="true"></i>
+          <span>Chiama e ordina</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- HERO -->
+      <section class="hero" id="top">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow" data-intro>Pizzeria al trancio, Santa Teresa di Spoltore</p>
+            <h1 class="display" data-intro>
+              Pizza in teglia, <em>leggera</em> come deve essere.
+            </h1>
+            <p class="lead" data-intro>
+              Lievito madre, 24-48 ore di lievitazione e prodotti del territorio. Al trancio o in
+              teglia intera, dal 2014.
+            </p>
+            <div class="hero-ctas" data-intro>
+              <a class="btn btn-primary" href="tel:+393292897246">
+                <i class="ph ph-phone" aria-hidden="true"></i>
+                <span>Chiama e ordina</span>
+              </a>
+              <a class="btn btn-ghost" href="#teglie">Vedi le teglie</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MARQUEE (unico sulla pagina) -->
+      <div class="marquee" aria-label="Gusti del giorno">
+        <div class="marquee-track">
+          <ul>
+            <li>Margherita</li>
+            <li>Patate e salsiccia</li>
+            <li>Diavola</li>
+            <li>Gustosa zucca, pancetta e gorgonzola</li>
+            <li>Rossa con salsiccia</li>
+            <li>Supplì</li>
+            <li>Arancini</li>
+            <li>Crocchette</li>
+          </ul>
+          <ul aria-hidden="true">
+            <li>Margherita</li>
+            <li>Patate e salsiccia</li>
+            <li>Diavola</li>
+            <li>Gustosa zucca, pancetta e gorgonzola</li>
+            <li>Rossa con salsiccia</li>
+            <li>Supplì</li>
+            <li>Arancini</li>
+            <li>Crocchette</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- STORY: scroll-driven 3D -->
+      <section class="story" id="impasto" aria-label="Come nasce la nostra pizza">
+        <div class="story-stage">
+          <div class="container story-grid">
+            <div class="chapters">
+              <article class="chapter" data-chapter="0">
+                <p class="stat">24-48 ore</p>
+                <h2 class="h2">Poco lievito, tanto tempo.</h2>
+                <p>
+                  Usiamo lievito madre e pochissimo lievito. L'impasto riposa dalle 24 alle 48 ore a
+                  temperatura controllata: per questo è leggero e si digerisce bene.
+                </p>
+              </article>
+              <article class="chapter" data-chapter="1">
+                <p class="stat">A mano</p>
+                <h2 class="h2">Stesa a mano, cotta in teglia.</h2>
+                <p>
+                  Ogni teglia viene stesa con delicatezza e condita con prodotti freschi, quando si
+                  può del territorio. Poi forno ben caldo, finché il bordo diventa dorato.
+                </p>
+              </article>
+              <article class="chapter" data-chapter="2">
+                <p class="stat">12 tranci</p>
+                <h2 class="h2">Tagliata a tranci, come piace a noi.</h2>
+                <p>
+                  La prendi al trancio da mangiare subito, oppure in box e teglie intere da portare a
+                  casa per tutta la famiglia.
+                </p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MANIFESTO -->
+      <section class="manifesto" aria-label="La leggerezza">
+        <div class="container">
+          <blockquote>
+            <p class="manifesto-text" id="manifesto-text">
+              Chiedete a un nostro cliente cosa gli piace della nostra pizza. Nove volte su dieci vi
+              risponderà: la leggerezza.
+            </p>
+            <footer>La famiglia Canale</footer>
+          </blockquote>
+        </div>
+      </section>
+
+      <!-- TEGLIE: horizontal pan -->
+      <section class="teglie" id="teglie">
+        <div class="teglie-pin">
+          <div class="teglie-head container">
+            <h2 class="h2">Box e teglie da portare a casa.</h2>
+            <p class="muted">
+              Prezzi dal nostro menu per la consegna. Chiama per i gusti del giorno.
+            </p>
+          </div>
+          <div class="teglie-track" id="teglie-track">
+            <figure class="tcard tcard-photo">
+              <img
+                src="./img/box.webp"
+                alt="Box aperto con sei tranci: margherita, patate e salsiccia, diavola"
+                width="1800"
+                height="1350"
+                loading="lazy"
+              />
+            </figure>
+            <article class="tcard">
+              <p class="tcard-count">6<span>pezzi</span></p>
+              <h3>Box misto</h3>
+              <p>3 margherita e 3 patate e salsiccia.</p>
+              <p class="price">11,50 €</p>
+            </article>
+            <article class="tcard tcard-tomato">
+              <p class="tcard-count">6<span>pezzi</span></p>
+              <h3>Box misto piccante</h3>
+              <p>2 margherita, 2 bianca con patate, 2 diavola.</p>
+              <p class="price">11,50 €</p>
+            </article>
+            <article class="tcard">
+              <p class="tcard-count">6<span>pezzi</span></p>
+              <h3>6 Margherite</h3>
+              <p>Pomodoro e mozzarella, semplice e sempre giusta.</p>
+              <p class="price">10,00 €</p>
+            </article>
+            <article class="tcard tcard-olive">
+              <p class="tcard-count">8<span>pezzi</span></p>
+              <h3>Teglia 3 gusti</h3>
+              <p>3 margherita, 2 patate, 3 diavola.</p>
+              <p class="price">15,00 €</p>
+            </article>
+            <article class="tcard">
+              <p class="tcard-count">8<span>pezzi</span></p>
+              <h3>Teglia Gustosa</h3>
+              <p>2 margherita, 3 rossa con salsiccia, 3 gustosa con zucca, pancetta e gorgonzola.</p>
+              <p class="price">17,00 €</p>
+            </article>
+            <article class="tcard tcard-tomato">
+              <p class="tcard-count">12<span>pezzi</span></p>
+              <h3>Teglia Margherita</h3>
+              <p>Dodici tranci di pomodoro e mozzarella per tutta la tavola.</p>
+              <p class="price">19,00 €</p>
+            </article>
+            <article class="tcard">
+              <p class="tcard-count">12<span>pezzi</span></p>
+              <h3>Teglia mista 4 gusti</h3>
+              <p>3 margherita, 3 diavola, 3 gustosa, 3 patate.</p>
+              <p class="price">25,00 €</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FRITTI -->
+      <section class="fritti section" id="fritti">
+        <div class="container fritti-grid">
+          <figure class="fritti-photo" data-reveal>
+            <img
+              src="./img/fritti.webp"
+              alt="Supplì, arancini e crocchette dorati su carta, un supplì aperto con la mozzarella filante"
+              width="1800"
+              height="1800"
+              loading="lazy"
+            />
+          </figure>
+          <div class="fritti-copy">
+            <h2 class="h2" data-reveal>E per cominciare, i fritti.</h2>
+            <ul class="fritti-list">
+              <li data-reveal>
+                <div><h3>Supplì</h3><p>Riso allo zafferano, mozzarella e prosciutto cotto.</p></div>
+                <span class="price">1,80 €</span>
+              </li>
+              <li data-reveal>
+                <div><h3>Crocchette</h3><p>Patate, prezzemolo, grana e mozzarella.</p></div>
+                <span class="price">1,80 €</span>
+              </li>
+              <li data-reveal>
+                <div><h3>Arancini</h3><p>Riso, tartufo, salsiccia, grana e mozzarella.</p></div>
+                <span class="price">3,00 €</span>
+              </li>
+              <li data-reveal>
+                <div><h3>Calzone classico</h3><p>Il calzone fritto di sempre.</p></div>
+                <span class="price">3,00 €</span>
+              </li>
+              <li data-reveal>
+                <div><h3>Hot dog</h3><p>Per i più piccoli, e non solo.</p></div>
+                <span class="price">2,50 €</span>
+              </li>
+              <li data-reveal>
+                <div><h3>Patatine fritte</h3><p>Croccanti, appena fatte.</p></div>
+                <span class="price">2,80 €</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAMIGLIA -->
+      <section class="famiglia section" id="famiglia">
+        <div class="container famiglia-grid">
+          <div class="famiglia-copy" data-reveal>
+            <p class="eyebrow">La famiglia</p>
+            <h2 class="h2">Un nome di casa, dal 2014.</h2>
+            <p>
+              Nonna Diana è il nome della nonna di famiglia. La pizzeria l'ha aperta Sandro Canale,
+              pizzaiolo di lunga esperienza, insieme ai figli Stefano e Diana.
+            </p>
+            <p>
+              Da allora sforniamo teglie ogni giorno, e tanti clienti ormai sono di casa anche loro.
+            </p>
+          </div>
+          <figure class="famiglia-photo" data-parallax>
+            <img
+              src="./img/impasto.webp"
+              alt="Mani infarinate che stendono l'impasto in una teglia rettangolare"
+              width="1440"
+              height="1800"
+              loading="lazy"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <!-- RECENSIONI -->
+      <section class="recensioni section" aria-label="Recensioni">
+        <div class="container recensioni-grid">
+          <div class="score" data-reveal>
+            <p class="score-num">4,7</p>
+            <p class="score-stars" aria-label="4,7 stelle su 5">
+              <i class="ph-fill ph-star" aria-hidden="true"></i>
+              <i class="ph-fill ph-star" aria-hidden="true"></i>
+              <i class="ph-fill ph-star" aria-hidden="true"></i>
+              <i class="ph-fill ph-star" aria-hidden="true"></i>
+              <i class="ph-fill ph-star-half" aria-hidden="true"></i>
+            </p>
+            <p class="muted">Su Google, con oltre 400 recensioni.</p>
+          </div>
+          <figure class="quote" data-reveal>
+            <blockquote>“Qualità top, ingredienti ottimi, alta professionalità.”</blockquote>
+            <figcaption>Recensione di un cliente, via Restaurant Guru</figcaption>
+          </figure>
+          <figure class="quote" data-reveal>
+            <blockquote>“Sempre il top.”</blockquote>
+            <figcaption>Recensione di un cliente, via Restaurant Guru</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- DOVE SIAMO -->
+      <section class="dove" id="dove">
+        <div class="dove-bg" aria-hidden="true">
+          <img src="./img/bancone.webp" alt="" width="1800" height="1018" loading="lazy" />
+        </div>
+        <div class="container dove-inner">
+          <div class="dove-head" data-reveal>
+            <p class="eyebrow">Dove siamo</p>
+            <h2 class="h2">Passa a prenderla, o te la portiamo noi.</h2>
+          </div>
+          <div class="dove-cards">
+            <article class="place" data-reveal>
+              <h3>Santa Teresa di Spoltore</h3>
+              <p>
+                <i class="ph ph-map-pin" aria-hidden="true"></i>
+                <span>Via Mare Adriatico, 75/bis</span>
+              </p>
+              <p>
+                <i class="ph ph-phone" aria-hidden="true"></i>
+                <span><a href="tel:+390854972649">085 497 2649</a>
+                <span class="sep">oppure</span>
+                <a href="tel:+393292897246">329 289 7246</a></span>
+              </p>
+              <p>
+                <i class="ph ph-clock" aria-hidden="true"></i>
+                <span>Da martedì a domenica, 17:00-21:30. Lunedì chiuso.</span>
+              </p>
+              <a
+                class="link"
+                href="https://www.google.com/maps/search/?api=1&query=Pizzeria+Nonna+Diana+Via+Mare+Adriatico+75+Spoltore"
+                target="_blank"
+                rel="noopener"
+                >Indicazioni <i class="ph ph-arrow-up-right" aria-hidden="true"></i
+              ></a>
+            </article>
+            <article class="place" data-reveal>
+              <h3>Pescara</h3>
+              <p>
+                <i class="ph ph-map-pin" aria-hidden="true"></i>
+                <span>Via d'Avalos, 110</span>
+              </p>
+              <p>
+                <i class="ph ph-phone" aria-hidden="true"></i>
+                <span><a href="tel:+390858184291">085 818 4291</a></span>
+              </p>
+              <p>
+                <i class="ph ph-moped" aria-hidden="true"></i>
+                <span>Asporto e consegna a domicilio.</span>
+              </p>
+              <a
+                class="link"
+                href="https://www.google.com/maps/search/?api=1&query=Via+d%27Avalos+110+Pescara"
+                target="_blank"
+                rel="noopener"
+                >Indicazioni <i class="ph ph-arrow-up-right" aria-hidden="true"></i
+              ></a>
+            </article>
+          </div>
+          <a class="btn btn-primary btn-lg" href="tel:+393292897246" data-reveal>
+            <i class="ph ph-phone" aria-hidden="true"></i>
+            <span>Chiama e ordina</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div>
+          <p class="footer-brand">Nonna Diana</p>
+          <p class="muted">Pizzeria Nonna Diana di Canale Sandro</p>
+        </div>
+        <ul class="social">
+          <li>
+            <a href="https://www.instagram.com/nonnadianapizzeria/" target="_blank" rel="noopener">
+              <i class="ph ph-instagram-logo" aria-hidden="true"></i> Instagram
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.facebook.com/p/Pizzeria-Nonna-Diana-100040696162909/"
+              target="_blank"
+              rel="noopener"
+            >
+              <i class="ph ph-facebook-logo" aria-hidden="true"></i> Facebook
+            </a>
+          </li>
+        </ul>
+        <p class="footer-note muted">
+          Demo concept. Le foto sono illustrative e verranno sostituite con quelle del locale.
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
