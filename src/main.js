@@ -51,7 +51,7 @@ const K = {
 /* ---------- smooth scroll on desktop only (touch keeps native iOS momentum) ---------- */
 let lenis = null;
 if (!reduced && !touch) {
-  lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+  lenis = new Lenis({ lerp: 0.085, smoothWheel: true, wheelMultiplier: 0.95 });
   lenis.on("scroll", ScrollTrigger.update);
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
@@ -129,10 +129,17 @@ if (!reduced) {
 }
 
 /* ---------- nav turns solid as soon as the page moves (text never slides under a bare nav) ---------- */
-ScrollTrigger.create({
-  start: 8,
-  end: "max",
-  toggleClass: { targets: "#nav", className: "is-solid" },
+// a plain check, not a ScrollTrigger: a trigger ending at "max" switched off on the last pixel
+const nav = document.getElementById("nav");
+const solidNav = () => nav.classList.toggle("is-solid", window.scrollY > 8);
+addEventListener("scroll", solidNav, { passive: true });
+solidNav();
+
+/* ---------- reading progress: a thin tomato line under the nav ---------- */
+gsap.to(".nav-progress", {
+  scaleX: 1,
+  ease: "none",
+  scrollTrigger: { start: 0, end: "max", scrub: reduced ? true : 0.3 },
 });
 
 /* ---------- the story: raw dough, baking, cutting ---------- */
@@ -226,6 +233,35 @@ if (reduced) {
       scrollTrigger: { trigger: ".manifesto", start: "top 90%", end: "top 20%", scrub: true },
     }
   );
+
+  /* ---------- scroll cue fades as soon as the story starts ---------- */
+  gsap.to(".scroll-cue", {
+    autoAlpha: 0,
+    y: 20,
+    ease: "none",
+    scrollTrigger: { trigger: ".hero", start: "top top", end: "15% top", scrub: true },
+  });
+
+  /* ---------- marquee: always drifting, faster and leaning with the scroll ---------- */
+  const marquee = gsap.to(".marquee-track", { xPercent: -50, duration: 38, ease: "none", repeat: -1 });
+  const lean = gsap.quickTo(".marquee-track", "skewX", { duration: 0.5, ease: "power3.out" });
+  let calm;
+  ScrollTrigger.create({
+    trigger: ".marquee",
+    start: "top bottom",
+    end: "bottom top",
+    onUpdate: (self) => {
+      const v = self.getVelocity();
+      gsap.killTweensOf(marquee);
+      marquee.timeScale(gsap.utils.clamp(1, 5, 1 + Math.abs(v) / 400));
+      lean(gsap.utils.clamp(-8, 8, -v / 250));
+      clearTimeout(calm);
+      calm = setTimeout(() => {
+        gsap.to(marquee, { timeScale: 1, duration: 0.8, ease: "power2.out", overwrite: true });
+        lean(0);
+      }, 120);
+    },
+  });
 
   /* ---------- manifesto: words light up as you read ---------- */
   const mt = document.getElementById("manifesto-text");

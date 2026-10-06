@@ -74,6 +74,10 @@ html.lenis body {
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
+::selection {
+  background: var(--tomato);
+  color: var(--tomato-ink);
+}
 body {
   margin: 0;
   background: var(--paper);
@@ -263,6 +267,15 @@ ul {
   backdrop-filter: blur(12px);
   box-shadow: 0 1px 0 var(--line);
 }
+.nav-progress {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  background: var(--tomato);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
 .nav-inner {
   height: 100%;
   max-width: var(--maxw);
@@ -383,6 +396,49 @@ ul {
   }
 }
 
+.scroll-cue {
+  display: none;
+}
+@media (min-width: 1100px) and (min-height: 700px) {
+  .scroll-cue {
+    position: absolute;
+    left: var(--gutter);
+    bottom: var(--s-6);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    min-height: 44px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink-soft);
+  }
+  .scroll-cue-line {
+    position: relative;
+    width: 2px;
+    height: 44px;
+    border-radius: 2px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .scroll-cue-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--tomato);
+    transform: translateY(-100%);
+    animation: cue 2.2s var(--ease-out) infinite;
+  }
+}
+@keyframes cue {
+  60%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+
 /* ---------- marquee ---------- */
 .marquee {
   position: relative;
@@ -396,7 +452,7 @@ ul {
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee 38s linear infinite;
+  will-change: transform;
 }
 .marquee ul {
   display: flex;
@@ -421,11 +477,6 @@ ul {
   background: currentColor;
   opacity: 0.55;
   transform: rotate(45deg);
-}
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
 }
 
 /* ---------- story (pinned, 3D driven) ---------- */
@@ -458,6 +509,22 @@ ul {
   margin-top: var(--s-5);
   color: var(--ink-soft);
   max-width: 42ch;
+}
+.chapters {
+  counter-reset: chapter;
+}
+.chapter {
+  counter-increment: chapter;
+}
+.stat::before {
+  content: "0" counter(chapter) " / 03";
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--ink-soft);
+  margin-bottom: var(--s-2);
 }
 .stat {
   font-family: var(--font-display);
@@ -663,6 +730,16 @@ ul {
   object-fit: cover;
   /* crop to the food, away from the background */
   object-position: 50% 92%;
+  transition: transform 1.2s var(--ease-out);
+}
+.tcard-photo img {
+  transition: transform 1.2s var(--ease-out);
+}
+@media (hover: hover) {
+  .fritti-photo:hover img,
+  .tcard-photo:hover img {
+    transform: scale(1.05);
+  }
 }
 .fritti-list {
   margin-top: var(--s-7);
@@ -675,6 +752,8 @@ ul {
   justify-content: space-between;
   gap: var(--s-4);
   align-items: baseline;
+  padding-bottom: var(--s-4);
+  border-bottom: 1px dashed var(--line);
 }
 .fritti-list h3 {
   font-size: 1.3rem;
@@ -910,13 +989,17 @@ ul {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--s-5);
-  align-items: center;
+  align-items: end;
 }
 .footer-brand {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.75rem;
-  letter-spacing: -0.03em;
+  font-size: clamp(3rem, 11vw, 9.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  font-stretch: 88%;
+  color: var(--tomato);
+  margin-bottom: var(--s-3);
 }
 .social {
   display: flex;
@@ -942,9 +1025,6 @@ ul {
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
   .btn,
   .nav-links a {
     transition: none;
@@ -1022,4 +1102,8 @@ ul {
   .manifesto-text {
     letter-spacing: -0.015em;
   }
+}
+.rm .scroll-cue-line::after {
+  animation: none;
+  transform: none;
 }
