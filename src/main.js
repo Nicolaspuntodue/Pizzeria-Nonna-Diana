@@ -142,6 +142,30 @@ gsap.to(".nav-progress", {
   scrollTrigger: { start: 0, end: "max", scrub: reduced ? true : 0.3 },
 });
 
+/* ---------- pizze al piatto: tabs (arrow keys move between them) ---------- */
+const pzTabs = [...document.querySelectorAll(".pz-tab")];
+const showPizze = (tab) => {
+  pzTabs.forEach((t) => {
+    const on = t === tab;
+    t.setAttribute("aria-selected", on);
+    t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+  });
+  const items = document.querySelectorAll(`#${tab.getAttribute("aria-controls")} li`);
+  if (!reduced) gsap.fromTo(items, { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.5, stagger: 0.03, ease: "expo.out" });
+  ScrollTrigger.refresh(); // the panel height changed, pins below must re-measure
+};
+pzTabs.forEach((t, i) => {
+  t.addEventListener("click", () => showPizze(t));
+  t.addEventListener("keydown", (e) => {
+    const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    if (!d) return;
+    const next = pzTabs[(i + d + pzTabs.length) % pzTabs.length];
+    next.focus();
+    showPizze(next);
+  });
+});
+
 /* ---------- the story: raw dough, baking, cutting ---------- */
 const chapters = gsap.utils.toArray(".chapter");
 const chapterWords = chapters.map((c) => splitWords(c.querySelector("h2")));

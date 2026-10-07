@@ -710,6 +710,197 @@ ul {
   }
 }
 
+/* ---------- pizze al piatto ---------- */
+.pizze {
+  background: var(--paper-2);
+}
+.pizze-head .muted {
+  margin-top: var(--s-4);
+  max-width: 52ch;
+}
+.pizze-grid {
+  margin-top: var(--s-8);
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: clamp(var(--s-6), 5vw, var(--s-8));
+  align-items: start;
+}
+.pz-feature {
+  position: sticky;
+  top: calc(var(--nav-h) + var(--s-5));
+  padding: var(--s-6);
+  border-radius: var(--radius);
+  background: var(--tomato);
+  color: var(--tomato-ink);
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: var(--s-3);
+  overflow: hidden;
+  isolation: isolate;
+}
+/* a round pie peeking from the corner, drawn in CSS */
+.pz-feature::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -70px;
+  bottom: -70px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 40%, rgb(255 247 239 / 0.5) 0 9px, transparent 10px),
+    radial-gradient(circle at 62% 30%, rgb(255 247 239 / 0.5) 0 7px, transparent 8px),
+    radial-gradient(circle at 55% 62%, rgb(255 247 239 / 0.5) 0 11px, transparent 12px),
+    radial-gradient(circle, rgb(255 247 239 / 0.18) 0 62%, rgb(255 247 239 / 0.32) 63% 70%, transparent 71%);
+}
+.pz-feature-kicker {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.pz-feature-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-stretch: 88%;
+}
+.pz-feature p:not([class]) {
+  max-width: 30ch;
+  opacity: 0.92;
+}
+.pz-feature-price {
+  margin-top: var(--s-4);
+  font-family: var(--font-display);
+  font-weight: 750;
+  font-size: 1.6rem;
+}
+
+.pz-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  padding: var(--s-1);
+  border-radius: 999px;
+  background: var(--paper);
+  width: fit-content;
+  box-shadow: 0 1px 0 var(--line);
+}
+.pz-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: 44px;
+  padding: 0 var(--s-5);
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: 700 0.975rem var(--font-body);
+  cursor: pointer;
+  transition:
+    background-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out);
+}
+.pz-tab span {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+.pz-tab:hover {
+  color: var(--ink);
+}
+.pz-tab[aria-selected="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.pz-list {
+  margin-top: var(--s-6);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-5) var(--s-7);
+}
+.pz-list[hidden] {
+  display: none;
+}
+.pz-list li {
+  padding-bottom: var(--s-4);
+  border-bottom: 1px dashed var(--line);
+}
+.pz-name {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+}
+.pz-name h3 {
+  font-size: 1.3rem;
+  letter-spacing: -0.015em;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+/* menu-board leader dots between the name and the price */
+.pz-dots {
+  flex: 1;
+  min-width: var(--s-4);
+  height: 1em;
+  background: radial-gradient(circle, var(--ink-soft) 1px, transparent 1.5px) 0 85% / 8px 8px repeat-x;
+  opacity: 0.45;
+}
+.pz-name .price {
+  font-family: var(--font-display);
+  font-weight: 750;
+  color: var(--tomato);
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+.pz-list p {
+  color: var(--ink-soft);
+  font-size: 0.975rem;
+  margin-top: var(--s-1);
+}
+.tag {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--olive);
+  color: var(--olive-ink);
+}
+@media (max-width: 900px) {
+  .pizze-grid {
+    grid-template-columns: 1fr;
+  }
+  .pz-feature {
+    position: relative;
+    top: auto;
+  }
+  .pz-list {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .pz-tabs {
+    width: 100%;
+  }
+  .pz-tab {
+    flex: 1;
+    justify-content: center;
+    padding: 0 var(--s-2);
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .pz-tab span {
+    display: none;
+  }
+}
+
 /* ---------- fritti ---------- */
 .fritti-grid {
   display: grid;
